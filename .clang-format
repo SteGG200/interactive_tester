@@ -1,0 +1,4 @@
+BasedOnStyle: Google
+UseTab: Always
+IndentWidth: 2
+TabWidth: 2
