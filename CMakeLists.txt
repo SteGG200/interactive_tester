@@ -23,3 +23,6 @@ add_executable(interactive_tester ${SOURCES})
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     target_compile_options(interactive_tester PRIVATE -Wall -Wextra -Wpedantic)
 endif()
+
+include(GNUInstallDirs)
+install(TARGETS interactive_tester RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

@@ -35,13 +35,24 @@ In interactive competitive programming problems, your solution must communicate 
 - C++17 compliant compiler (GCC, Clang, or MSVC)
 - CMake 3.14 or higher
 
-### Building on Linux / macOS
+### Quick Commands (via Makefile)
+
+On Unix-like systems, you can use the provided [Makefile](file:///home/stegg/Documents/cpp/interactive_tester/Makefile) for convenience:
 
 ```bash
-# Clone the repository and navigate into the folder
-cd interactive_tester
+make compile       # Build release binary in build/
+make debug         # Build debug binary in build-debug/
+make format        # Format codebase with clang-format
+make format-check  # Verify formatting compliance
+make test          # Compile test fixtures and run interactor integration test
+make test-timeout  # Run timeout test case
+make install       # Install binary to /usr/local/bin (supports PREFIX and DESTDIR)
+make uninstall     # Remove binary from /usr/local/bin
+```
 
-# Create build directory and compile
+### Building with CMake directly
+
+```bash
 mkdir -p build && cd build
 cmake ..
 make
