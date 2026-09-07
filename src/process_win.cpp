@@ -140,7 +140,7 @@ int Process::read_stdout(char* buffer, size_t max_bytes, bool& eof) {
 	DWORD bytes_avail = 0;
 	if (!PeekNamedPipe(stdout_read_, NULL, 0, NULL, &bytes_avail, NULL)) {
 		DWORD err = GetLastError();
-		if (err == ERROR_BROKEN_PIPE || err == ERROR_PIPE_ENDED) {
+		if (err == ERROR_BROKEN_PIPE || err == ERROR_NO_DATA) {
 			eof = true;
 			return 0;
 		}
@@ -172,7 +172,7 @@ int Process::read_stdout(char* buffer, size_t max_bytes, bool& eof) {
 		return static_cast<int>(bytes_read);
 	} else {
 		DWORD err = GetLastError();
-		if (err == ERROR_BROKEN_PIPE || err == ERROR_PIPE_ENDED) {
+		if (err == ERROR_BROKEN_PIPE || err == ERROR_NO_DATA) {
 			eof = true;
 			return 0;
 		}
