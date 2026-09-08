@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+    branches: [ "**" ]
+
+jobs:
+  build-and-test:
+    name: Build & Test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install clang-format (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-format
+
+      - name: Check code formatting (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          clang-format --dry-run --Werror src/*.cpp include/*.hpp test/*.cpp
+
+      - name: Configure CMake (Release)
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build Release
+        run: cmake --build build --parallel --config Release
+
+      - name: Configure CMake (Debug)
+        run: cmake -S . -B build-debug -DCMAKE_BUILD_TYPE=Debug
+
+      - name: Build Debug & Test Fixtures
+        run: cmake --build build-debug --parallel --config Debug
+
+      - name: Run Integration Test
+        shell: bash
+        run: |
+          INTERACTIVE_TESTER=$(find build-debug -name "interactive_tester*" -type f | grep -v "\.obj" | grep -v "\.o" | head -n 1)
+          GUESS=$(find build-debug -name "guess_solution*" -type f | grep -v "\.obj" | grep -v "\.o" | head -n 1)
+          ECHO=$(find build-debug -name "echo_interactor*" -type f | grep -v "\.obj" | grep -v "\.o" | head -n 1)
+          "$INTERACTIVE_TESTER" "$GUESS" "$ECHO" -v
+
+      - name: Run Timeout Test (Expected TLE 124)
+        shell: bash
+        run: |
+          INTERACTIVE_TESTER=$(find build-debug -name "interactive_tester*" -type f | grep -v "\.obj" | grep -v "\.o" | head -n 1)
+          HANG=$(find build-debug -name "hang_solution*" -type f | grep -v "\.obj" | grep -v "\.o" | head -n 1)
+          ECHO=$(find build-debug -name "echo_interactor*" -type f | grep -v "\.obj" | grep -v "\.o" | head -n 1)
+          set +e
+          "$INTERACTIVE_TESTER" "$HANG" "$ECHO" -t 100 -v
+          EXIT_CODE=$?
+          if [ $EXIT_CODE -ne 124 ]; then
+            echo "Expected exit code 124, got $EXIT_CODE"
+            exit 1
+          fi

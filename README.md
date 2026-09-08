@@ -28,45 +28,66 @@ In interactive competitive programming problems, your solution must communicate 
 
 ---
 
-## Build Instructions
+## Installation
 
-### Prerequisites
+### Pre-built Packages (GitHub Releases)
+
+Pre-compiled binary packages for each release are available on the [Releases](../../releases) page:
+
+- **Windows (`.msi`)**: Download and run the installer wizard.
+- **Debian / Ubuntu (`.deb`)**:
+  ```bash
+  sudo apt install ./interactive-tester-1.0.0-Linux.deb
+  # or
+  sudo dpkg -i interactive-tester-1.0.0-Linux.deb
+  ```
+- **Fedora / RHEL (`.rpm`)**:
+  ```bash
+  sudo dnf install ./interactive-tester-1.0.0-Linux.rpm
+  # or
+  sudo rpm -i interactive-tester-1.0.0-Linux.rpm
+  ```
+- **macOS (`.pkg`)**: Download and double-click the `.pkg` installer package to install.
+
+### Building & Installing from Source
+
+#### Prerequisites
 
 - C++17 compliant compiler (GCC, Clang, or MSVC)
 - CMake 3.14 or higher
 
-### Quick Commands (via Makefile)
+#### Quick Commands (via Makefile)
 
 On Unix-like systems, you can use the provided [Makefile](file:///home/stegg/Documents/cpp/interactive_tester/Makefile) for convenience:
 
 ```bash
-make compile       # Build release binary in build/
-make debug         # Build debug binary in build-debug/
-make format        # Format codebase with clang-format
-make format-check  # Verify formatting compliance
-make test          # Compile test fixtures and run interactor integration test
-make test-timeout  # Run timeout test case
-make install       # Install binary to /usr/local/bin (supports PREFIX and DESTDIR)
-make uninstall     # Remove binary from /usr/local/bin
+make compile         # Build release binary in build/
+make debug           # Build debug binary in build-debug/
+make format          # Format codebase with clang-format
+make format-check    # Verify formatting compliance
+make test            # Compile test fixtures and run interactor integration test
+make test-timeout    # Run timeout test case
+sudo make install    # Install binary using CMake (supports PREFIX and DESTDIR)
+sudo make uninstall  # Remove binary from /usr/local/bin
 ```
 
-### Building with CMake directly
+#### Building and Installing with CMake
 
 ```bash
-mkdir -p build && cd build
-cmake ..
-make
+# Configure and build
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build --parallel --config Release
+
+# Install (optional)
+sudo cmake --install build   # Supports --prefix <path>
 ```
 
-The executable `interactive_tester` will be generated inside the `build/` directory.
-
-### Building on Windows (MSVC)
+On Windows (MSVC Command Prompt / PowerShell):
 
 ```cmd
-mkdir build
-cd build
-cmake ..
-cmake --build . --config Release
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build --config Release
+cmake --install build
 ```
 
 ---

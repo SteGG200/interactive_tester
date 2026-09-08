@@ -32,7 +32,7 @@ format-check:
 
 ## Testing targets
 test-fixtures: $(DEBUG_DIR)
-	@echo "Compiling test fixtures into $(BUILD_DIR)..."
+	@echo "Compiling test fixtures into $(DEBUG_DIR)..."
 	$(CXX) $(CXXFLAGS) test/echo_interactor.cpp -o $(DEBUG_DIR)/echo_interactor
 	$(CXX) $(CXXFLAGS) test/guess_solution.cpp -o $(DEBUG_DIR)/guess_solution
 	$(CXX) $(CXXFLAGS) test/hang_solution.cpp -o $(DEBUG_DIR)/hang_solution
@@ -41,9 +41,9 @@ test: debug test-fixtures
 	@echo "Executing interaction test..."
 	$(DEBUG_DIR)/interactive_tester $(DEBUG_DIR)/guess_solution $(DEBUG_DIR)/echo_interactor -v
 
-test-timeout: compile test-fixtures
+test-timeout: debug test-fixtures
 	@echo "Executing timeout test (expected TLE exit code 124)..."
-	-$(BUILD_DIR)/interactive_tester $(BUILD_DIR)/hang_solution $(BUILD_DIR)/echo_interactor -t 100 -v
+	-$(DEBUG_DIR)/interactive_tester $(DEBUG_DIR)/hang_solution $(DEBUG_DIR)/echo_interactor -t 100 -v
 
 ## Installation targets
 install: compile
