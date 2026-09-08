@@ -1,7 +1,7 @@
 <CPackWiXPatch>
-  <CPackWiXFragment Id="CM_CP_application">
+  <CPackWiXFragment Id="CM_CP_bin.interactive_tester.exe">
     <Environment
-      Id="PathEnvironmentVariable"
+      Id="AppendToPath"
       Action="set"
       Name="PATH"
       Value="[INSTALL_ROOT]bin"
