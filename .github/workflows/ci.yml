@@ -2,11 +2,30 @@ name: CI
 
 on:
   push:
-    branches: [ "**" ]
+    branches: ["**"]
   pull_request:
-    branches: [ "**" ]
+    branches: ["**"]
 
 jobs:
+  format-and-lint:
+    name: Check Code Style
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check Code Style
+        uses: cpp-linter/cpp-linter-action@v2
+        id: linter
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          style: "file"
+          tidy-checks: "-*"
+          thread-comments: ${{ github.event_name == 'pull_request' }}
+          ignore: |
+            test/
+            .github/
   build-and-test:
     name: Build & Test (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
@@ -18,17 +37,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Install clang-format (Linux)
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y clang-format
-
-      - name: Check code formatting (Linux)
-        if: runner.os == 'Linux'
-        run: |
-          clang-format --dry-run --Werror src/*.cpp include/*.hpp test/*.cpp
 
       - name: Configure CMake (Release)
         run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release

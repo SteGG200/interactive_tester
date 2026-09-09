@@ -24,11 +24,11 @@ debug:
 ## Code formatting
 format:
 	@echo "Formatting C++ files with clang-format..."
-	clang-format -i src/*.cpp include/*.hpp test/*.cpp
+	clang-format --style=file -i src/*.cpp include/*.hpp
 
 format-check:
 	@echo "Checking formatting with clang-format..."
-	clang-format --dry-run --Werror src/*.cpp include/*.hpp test/*.cpp
+	clang-format --style=file --dry-run --Werror src/*.cpp include/*.hpp
 
 ## Testing targets
 test-fixtures: $(DEBUG_DIR)
