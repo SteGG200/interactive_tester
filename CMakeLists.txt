@@ -63,6 +63,7 @@ set(CPACK_RPM_PACKAGE_GROUP "Development/Tools")
 
 # WiX-specific settings
 set(CPACK_WIX_UPGRADE_GUID "A2F89C41-9E8D-4E13-908F-43B7C2018A5D")
+set(CPACK_WIX_PATCH_FILE "${CMAKE_CURRENT_SOURCE_DIR}/wix/wixpatch.xml")
 
 include(CPack)
 

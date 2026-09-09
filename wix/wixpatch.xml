@@ -1,0 +1,12 @@
+<CPackWiXPatch>
+  <CPackWiXFragment Id="CM_CP_interactive_tester">
+    <Environment
+      Id="PathEnvironmentVariable"
+      Action="set"
+      Name="PATH"
+      Value="[INSTALL_ROOT]bin"
+      Permanent="no"
+      Part="last"
+      System="yes" />
+  </CPackWiXFragment>
+</CPackWiXPatch>
