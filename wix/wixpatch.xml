@@ -1,5 +1,5 @@
 <CPackWiXPatch>
-  <CPackWiXFragment Id="CM_CP_interactive_tester">
+  <CPackWiXFragment Id="CM_CP_application">
     <Environment
       Id="PathEnvironmentVariable"
       Action="set"

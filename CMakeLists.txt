@@ -37,7 +37,7 @@ if(BUILD_TESTS)
 endif()
 
 include(GNUInstallDirs)
-install(TARGETS interactive_tester RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(TARGETS interactive_tester RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT application)
 
 # CPack packaging configuration
 set(CPACK_PACKAGE_NAME "interactive-tester")
